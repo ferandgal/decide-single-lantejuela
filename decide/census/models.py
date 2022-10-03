@@ -7,3 +7,6 @@ class Census(models.Model):
 
     class Meta:
         unique_together = (('voting_id', 'voter_id'),)
+
+    def save(self, *args, **kwargs):
+        return super().save()
