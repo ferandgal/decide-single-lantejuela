@@ -1,4 +1,7 @@
 # decide-single-lantejuela
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/94bbb409ea59492ba0c493e4c733d0c4)](https://app.codacy.com/gh/ferandgal/decide-single-lantejuela?utm_source=github.com&utm_medium=referral&utm_content=ferandgal/decide-single-lantejuela&utm_campaign=Badge_Grade_Settings)
+
 Proyecto de Decide para la asignatura de EGC del grado de Ingeniería del Software en la Universidad de Sevilla ETSII.
 Los integrantes de grupo para el desrrollo del proyecto son:
       -Francisco Murillo Prior
