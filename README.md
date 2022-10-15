@@ -1,3 +1,4 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2f62bcd7b0ba43d28f77c0096174342d)](https://www.codacy.com/gh/ferandgal/decide-single-lantejuela/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ferandgal/decide-single-lantejuela&amp;utm_campaign=Badge_Grade)
 # decide-single-lantejuela
 Proyecto de Decide para la asignatura de EGC del grado de Ingeniería del Software en la Universidad de Sevilla ETSII.
 Los integrantes de grupo para el desrrollo del proyecto son:
