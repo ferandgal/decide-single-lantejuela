@@ -53,11 +53,10 @@ def add_to_census(request, voting_id, voter_id):
                 nombre = str(user_added[0].get('first_name'))
                 email = str(user_added[0].get('email'))
                 current_site = get_current_site(request)
-                print(str(current_site.domain))
                 send_mail(
                 'Added to voting census',
                 'Hi '+nombre+', you just got added to participate in some voting, to vote just click in the link below: http://'+str(current_site.domain)+"/booth/"+str(voting_id)+'/',
-                None,
+                "egc.lantejuela@gmail.com",
                 [email],
                 fail_silently=False,
                 )
