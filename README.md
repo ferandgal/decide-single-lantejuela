@@ -7,6 +7,7 @@ Los integrantes de grupo para el desrrollo del proyecto son:
       -Jose Manuel Ruiz Pérez
       -Juan Manuel Garcia Criado
       -Miguel Molina Rubio
+      -Francisco José Vargas Castro
       
 El proyecto escogido se denomina `Decide` que realiza la funcion de un sistema que permite realizar votaciones, donde exiten varios subsistemas a elegir para la implementación de nuevas funcionalidades. Nuestra aportación a dicho proyecto constiste en el desarrollo de esas nuevas incorporaciones y funcionalidades sobre el proyecto proporcionado por los docentes de la asignatura de Evolución y Gestion de la Configuración. De todos los subsistemas establecidos en el proyecto "DECIDE", nosotros hemos decidido escoger los subsistemas que tratan sobre `CESO` y `VISUALIZACIÓN DE RESULTADOS`, eligiendo dentro de estos 2 subsistemas algunas funcionalidades específicas para su posterior implemntación.
 
