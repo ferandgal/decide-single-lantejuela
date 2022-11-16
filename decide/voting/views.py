@@ -69,6 +69,7 @@ class VotingUpdate(generics.RetrieveUpdateDestroyAPIView):
                 st = status.HTTP_400_BAD_REQUEST
             else:
                 voting.start_date = timezone.now()
+                voting.num_votes = 0
                 voting.save()
                 msg = 'Voting started'
         elif action == 'stop':
@@ -99,3 +100,8 @@ class VotingUpdate(generics.RetrieveUpdateDestroyAPIView):
             msg = 'Action not found, try with start, stop or tally'
             st = status.HTTP_400_BAD_REQUEST
         return Response(msg, status=st)
+
+    def update_num_votes(voting_id):
+        voting = get_object_or_404(Voting, pk=voting_id)
+        voting.num_votes = voting.num_votes + 1
+        voting.save()

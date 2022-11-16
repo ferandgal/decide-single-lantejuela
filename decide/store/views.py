@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import generics
 
 from .models import Vote
+from voting.views import VotingUpdate
 from .serializers import VoteSerializer
 from base import mods
 from base.perms import UserIsStaff
@@ -68,5 +69,7 @@ class StoreView(generics.ListAPIView):
         v.b = b
 
         v.save()
+        VotingUpdate.update_num_votes(vid)
+        
 
         return  Response({})

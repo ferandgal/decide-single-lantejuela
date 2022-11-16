@@ -31,6 +31,7 @@ class QuestionOption(models.Model):
 class Voting(models.Model):
     name = models.CharField(max_length=200)
     desc = models.TextField(blank=True, null=True)
+    num_votes = models.IntegerField(blank=True, null=True)
     question = models.ForeignKey(Question, related_name='voting', on_delete=models.CASCADE)
 
     start_date = models.DateTimeField(blank=True, null=True)
@@ -118,6 +119,8 @@ class Voting(models.Model):
 
         self.postproc = postp
         self.save()
+        
+
 
     def __str__(self):
         return self.name
