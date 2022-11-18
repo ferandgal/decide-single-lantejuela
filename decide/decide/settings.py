@@ -180,3 +180,13 @@ if os.path.exists("config.jsonnet"):
 
 
 INSTALLED_APPS = INSTALLED_APPS + MODULES
+
+#EMAIL CONFIG
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'egc.lantejuela@gmail.com'
+EMAIL_HOST_PASSWORD = 'rbzhynomhhjmwrro'
+DEFAULT_FROM_EMAIL = 'egc.lantejuela@gmail.com'
+SERVER_EMAIL = 'egc.lantejuela@gmail.com'
