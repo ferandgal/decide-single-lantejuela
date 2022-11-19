@@ -69,6 +69,7 @@ class StoreView(generics.ListAPIView):
         v.b = b
 
         v.save()
+
         VotingUpdate.update_num_votes(vid)
         
 

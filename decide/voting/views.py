@@ -105,3 +105,4 @@ class VotingUpdate(generics.RetrieveUpdateDestroyAPIView):
         voting = get_object_or_404(Voting, pk=voting_id)
         voting.num_votes = voting.num_votes + 1
         voting.save()
+        return voting.num_votes

@@ -14,6 +14,7 @@ from mixnet.mixcrypt import ElGamal
 from mixnet.mixcrypt import MixCrypt
 from mixnet.models import Auth
 from voting.models import Voting, Question, QuestionOption
+from voting.views import VotingUpdate
 
 
 class VotingTestCase(BaseTestCase):
@@ -55,6 +56,7 @@ class VotingTestCase(BaseTestCase):
             c = Census(voter_id=u.id, voting_id=v.id)
             c.save()
 
+    
     def get_or_create_user(self, pk):
         user, _ = User.objects.get_or_create(pk=pk)
         user.username = 'user{}'.format(pk)
@@ -83,12 +85,32 @@ class VotingTestCase(BaseTestCase):
                 mods.post('store', json=data)
         return clear
 
+    def store_vote_census(self, v):
+        voters = list(Census.objects.filter(voting_id=v.id))
+
+        for voter in voters:
+            opt = v.question.options.all()
+            opt1 = opt[0]
+            a, b = self.encrypt_msg(opt1.number, v)
+            data = {
+                'voting': v.id,
+                'voter': voter.voter_id,
+                'vote': { 'a': a, 'b': b },
+                }
+            user = self.get_or_create_user(voter.voter_id)
+            self.login(user=user.username)
+            mods.post('store', json=data)
+
+        
+
+
     def test_complete_voting(self):
         v = self.create_voting()
         self.create_voters(v)
 
         v.create_pubkey()
         v.start_date = timezone.now()
+        v.num_votes = 0
         v.save()
 
         clear = self.store_votes(v)
@@ -208,3 +230,22 @@ class VotingTestCase(BaseTestCase):
         response = self.client.put('/voting/{}/'.format(voting.pk), data, format='json')
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), 'Voting already tallied')
+    
+    def test_update_num_votes(self):
+        v = self.create_voting()
+
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.num_votes = 0
+        v.save()
+
+
+        self.create_voters(v)
+        self.store_vote_census(v)
+        voters = list(Census.objects.filter(voting_id=v.id))
+        res = VotingUpdate.update_num_votes(v.id)
+
+        self.assertEqual(len(voters), res - 1)
+        
+
+
