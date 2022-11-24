@@ -68,9 +68,11 @@ class StoreView(generics.ListAPIView):
         v.a = a
         v.b = b
 
-        v.save()
+        #validating voter hasn't voted yet
+        if v.already_voted == False:
+            VotingUpdate.update_num_votes(vid)
+            v.already_voted = True
 
-        VotingUpdate.update_num_votes(vid)
-        
+        v.save()        
 
         return  Response({})
