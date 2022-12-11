@@ -68,11 +68,20 @@ class StoreView(generics.ListAPIView):
         v.a = a
         v.b = b
 
+<<<<<<< HEAD
         #validating voter hasn't voted yet
         if v.already_voted == False:
             VotingUpdate.update_num_votes(vid)
             v.already_voted = True
 
         v.save()        
+=======
+        if v.already_voted == False:
+            VotingUpdate.update_num_votes(vid)
+            v.already_voted = True
+        
+        v.save()
+        
+>>>>>>> feature/31-prueba-unitaria-contador-votaciones
 
         return  Response({})
