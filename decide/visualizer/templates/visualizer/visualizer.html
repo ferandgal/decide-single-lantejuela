@@ -7,6 +7,8 @@
     <link type="text/css" rel="stylesheet"
          href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
     <link type="text/css" rel="stylesheet" href="{% static "booth/style.css" %}" />
+
+    
 {% endblock %}
 
 {% block content %}
@@ -40,11 +42,23 @@
                         </tr>
                     </tbody>
                 </table>
+                
+                    <div class="row">
+                        <div class="col-md-6">
+                            <canvas id="barChart"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                    </div>
+                
+
             </div>
 
         </div>
     </div>
 {% endblock %}
+
 
 {% block extrabody %}
     <!-- Vuejs -->
@@ -52,15 +66,57 @@
     <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
     <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
 
-    <script>
-        var voting = {{voting|safe}};
-        var app = new Vue({
-            delimiters: ['[[', ']]'],
-            el: '#app-visualizer',
-            data: {
-                voting: voting
-            }
-        })
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.min.js" integrity="sha512-tQYZBKe34uzoeOjY9jr3MX7R/mo7n25vnqbnrkskGr4D6YOoPYSpyafUAzQVjV6xAozAqUFIEFsCO4z8mnVBXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+            <script>
+                var voting = {{ voting| safe}};
+                var opV = {{optVotes| safe}};
+                var num = {{ numVotes| safe}};
+                console.log(opV);
+                var app = new Vue({
+                    delimiters: ['[[', ']]'],
+                    el: '#app-visualizer',
+                    data: {
+                        voting: voting
+                    }
+                })
+
+                const ctx = document.getElementById('barChart');
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: opV,
+                        datasets: [{
+                            label: '# of Votes',
+                            data: num,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+                const pieGraph = document.getElementById('pieChart');
+
+                new Chart(pieGraph, {
+                        type: 'pie',// Tipo de gráfica. Puede ser dougnhut o pie
+                        data: {
+                            labels: opV,
+                            datasets: [{
+                                data: num
+                                // Aquí más datos...
+                        }]
+                        },
+                    });
+
+
+            </script>
 </body>
 {% endblock %}
