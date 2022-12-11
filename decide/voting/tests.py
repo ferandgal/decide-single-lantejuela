@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
+from django.shortcuts import get_object_or_404
 
 from base import mods
 from base.tests import BaseTestCase
@@ -15,6 +16,7 @@ from mixnet.mixcrypt import MixCrypt
 from mixnet.models import Auth
 from voting.models import Voting, Question, QuestionOption
 from voting.views import VotingUpdate
+from store.models import Vote
 
 
 class VotingTestCase(BaseTestCase):
@@ -55,7 +57,7 @@ class VotingTestCase(BaseTestCase):
             u.save()
             c = Census(voter_id=u.id, voting_id=v.id)
             c.save()
-
+    
     
     def get_or_create_user(self, pk):
         user, _ = User.objects.get_or_create(pk=pk)
@@ -100,8 +102,6 @@ class VotingTestCase(BaseTestCase):
             user = self.get_or_create_user(voter.voter_id)
             self.login(user=user.username)
             mods.post('store', json=data)
-
-        
 
 
     def test_complete_voting(self):
@@ -232,6 +232,8 @@ class VotingTestCase(BaseTestCase):
         self.assertEqual(response.json(), 'Voting already tallied')
     
     def test_update_num_votes(self):
+
+        #Test num_votes update
         v = self.create_voting()
 
         v.create_pubkey()
@@ -246,6 +248,53 @@ class VotingTestCase(BaseTestCase):
         res = VotingUpdate.update_num_votes(v.id)
 
         self.assertEqual(len(voters), res - 1)
+
+        #Test num_votes doesn't update if the voter already voted before
+        voter = voters[0]
+
+        opt = v.question.options.all()
+        opt1 = opt[0]
+        a, b = self.encrypt_msg(opt1.number, v)
+        data = {
+            'voting': v.id,
+            'voter': voter.voter_id,
+            'vote': { 'a': a, 'b': b },
+            }
+        user = self.get_or_create_user(voter.voter_id)
+        self.login(user=user.username)
+        mods.post('store', json=data)
+
+        res = VotingUpdate.update_num_votes(v.id)
+
+        self.assertEqual(len(voters), res - 2)
+
+
+
+    def test_inicialize_num_votes(self):
+        v = self.create_voting()
+        self.login()
+
+        data = {'action': 'start'}
+        self.client.put('/voting/{}/'.format(v.pk), data, format='json')
+        res = VotingUpdate.update_num_votes(v.id)
+        self.assertEqual(res - 1, 0)
+        
+    def test_voter_already_voted_update(self):
+        v = self.create_voting()
+
+        v.create_pubkey()
+        v.start_date = timezone.now()
+        v.num_votes = 0
+        v.save()
+
+
+        self.create_voters(v)
+        self.store_vote_census(v)
+        voters = list(Census.objects.filter(voting_id=v.id))
+        voter = voters[0]
+        vote = get_object_or_404(Vote, pk = voter.voter_id)
+
+        self.assertEqual(vote.already_voted, True)
         
 
 
