@@ -15,6 +15,7 @@ from census.models import Census
 from mixnet.models import Key
 from voting.models import Question
 from voting.models import Voting
+from store.models import Vote
 
 
 class StoreTextCase(BaseTestCase):
@@ -33,6 +34,11 @@ class StoreTextCase(BaseTestCase):
 
     def tearDown(self):
         super().tearDown()
+
+    def test_already_vote_inicialize(self):
+        self.vote = Vote(voting_id = 10, voter_id = 15, a = 5, b = 7)
+        self.vote.save()
+        self.assertEqual(self.vote.already_voted, False)
 
     def gen_voting(self, pk):
         voting = Voting(pk=pk, name='v1', question=self.question, start_date=timezone.now(),
@@ -194,4 +200,6 @@ class StoreTextCase(BaseTestCase):
         self.voting.save()
         response = self.client.post('/store/', data, format='json')
         self.assertEqual(response.status_code, 401)
+
+    
 
