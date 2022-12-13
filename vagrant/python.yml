@@ -5,7 +5,7 @@
   git:
     repo: 'https://github.com/ferandgal/decide-single-lantejuela.git'
     dest: /home/decide/decide
-    version: develop
+    version: fix/38-arreglarVagrant
 
 - name: Python virtualenv
   become: yes
