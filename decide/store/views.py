@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import generics
 
 from .models import Vote
+from voting.views import VotingUpdate
 from .serializers import VoteSerializer
 from base import mods
 from base.perms import UserIsStaff
@@ -67,6 +68,11 @@ class StoreView(generics.ListAPIView):
         v.a = a
         v.b = b
 
-        v.save()
+        #validating voter hasn't voted yet
+        if v.already_voted == False:
+            VotingUpdate.update_num_votes(vid)
+            v.already_voted = True
+
+        v.save()        
 
         return  Response({})

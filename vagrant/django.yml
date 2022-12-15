@@ -5,7 +5,7 @@
   shell: ~/venv/bin/python manage.py collectstatic --noinput
   args:
     chdir: /home/decide/decide/decide
-
+  
 - name: Database migration
   become: yes
   become_user: decide
@@ -19,3 +19,5 @@
   shell: ~/venv/bin/python manage.py shell -c "from django.contrib.auth.models import User; User.objects.filter(username='admin') or User.objects.create_superuser('admin', 'admin@example.com', 'admin')"
   args:
     chdir: /home/decide/decide/decide
+
+
