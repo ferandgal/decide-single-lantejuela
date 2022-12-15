@@ -73,3 +73,11 @@ class CensusTestCase(BaseTestCase):
         response = self.client.delete('/census/{}/'.format(1), data, format='json')
         self.assertEqual(response.status_code, 204)
         self.assertEqual(0, Census.objects.count())
+
+    def test_duplicated_census(self):
+        data = {'voting_id': 2, 'voters': [1]}
+        self.login()
+        self.client.post('/census', data, format='json')
+        response = self.client.post('/census', data, format='json')
+        self.assertEqual(response.status_code, 301)
+        self.assertEqual(len(data.get('voters')), Census.objects.count())
