@@ -13,7 +13,7 @@ jobs:
         env:
           POSTGRES_USER: decide
           POSTGRES_PASSWORD: decide
-          POSTGRES_DB: decidedb
+          POSTGRES_DB: decide19
         ports:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
