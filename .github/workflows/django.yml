@@ -35,8 +35,8 @@ jobs:
         cp decide/decide/settings.py decide/local_settings.gactions.py
     - name: Run migrations (unnecessary)
       run: |
-        python manage.py migrate
         cd decide
+        python manage.py migrate
     - name: Run tests
       run: |
         cd decide
