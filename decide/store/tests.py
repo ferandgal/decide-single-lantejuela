@@ -35,6 +35,11 @@ class StoreTextCase(BaseTestCase):
     def tearDown(self):
         super().tearDown()
 
+    def test_already_vote_inicialize(self):
+        self.vote = Vote(voting_id = 10, voter_id = 15, a = 5, b = 7)
+        self.vote.save()
+        self.assertEqual(self.vote.already_voted, False)
+
     def gen_voting(self, pk):
         voting = Voting(pk=pk, name='v1', question=self.question, start_date=timezone.now(),
                 end_date=timezone.now() + datetime.timedelta(days=1), num_votes = 0)

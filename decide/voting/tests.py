@@ -279,22 +279,6 @@ class VotingTestCase(BaseTestCase):
         res = VotingUpdate.update_num_votes(v.id)
         self.assertEqual(res - 1, 0)
         
-    def test_voter_already_voted_update(self):
-        v = self.create_voting()
-
-        v.create_pubkey()
-        v.start_date = timezone.now()
-        v.num_votes = 0
-        v.save()
-
-
-        self.create_voters(v)
-        self.store_vote_census(v)
-        voters = list(Census.objects.filter(voting_id=v.id))
-        voter = voters[0]
-        vote = get_object_or_404(Vote, pk = voter.voter_id)
-
-        self.assertEqual(vote.already_voted, True)
-        
+    
 
 
